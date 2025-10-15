@@ -1,14 +1,14 @@
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 
 interface InputLabelProps {
-  inputId: string;
+  htmlFor: ComponentProps<"label">["htmlFor"];
   children: ReactNode;
 }
 
-const InputLabel = ({ inputId, children }: InputLabelProps) => {
+const InputLabel = ({ htmlFor, children }: InputLabelProps) => {
   return (
     <label
-      htmlFor={inputId}
+      htmlFor={htmlFor}
       className="text-brand-white mb-1 text-sm font-semibold"
     >
       {children}

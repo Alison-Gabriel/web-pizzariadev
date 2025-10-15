@@ -54,7 +54,7 @@ export const AuthenticationForm = () => {
       className="flex w-full flex-col gap-3"
     >
       <Input.Root>
-        <Input.Label inputId="email">E-mail</Input.Label>
+        <Input.Label htmlFor="email">E-mail</Input.Label>
         <Input.Field
           id="email"
           type="email"
@@ -67,7 +67,7 @@ export const AuthenticationForm = () => {
       </Input.Root>
 
       <Input.Root>
-        <Input.Label inputId="password">Senha</Input.Label>
+        <Input.Label htmlFor="password">Senha</Input.Label>
         <Input.Field
           id="password"
           type="password"
