@@ -52,9 +52,7 @@ export const SignUpForm = () => {
       className="flex w-full flex-col gap-3"
     >
       <Input.Root>
-        <Input.Label htmlFor="name">Nome</Input.Label>
         <Input.Field
-          id="name"
           type="text"
           placeholder="Digite seu nome completo"
           {...register("name")}
@@ -65,9 +63,7 @@ export const SignUpForm = () => {
       </Input.Root>
 
       <Input.Root>
-        <Input.Label htmlFor="email">E-mail</Input.Label>
         <Input.Field
-          id="email"
           type="email"
           placeholder="Digite seu e-mail"
           {...register("email")}
@@ -78,9 +74,7 @@ export const SignUpForm = () => {
       </Input.Root>
 
       <Input.Root>
-        <Input.Label htmlFor="password">Senha</Input.Label>
         <Input.Field
-          id="password"
           type="password"
           placeholder="Digite sua senha"
           {...register("password")}
