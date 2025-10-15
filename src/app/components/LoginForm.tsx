@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { authenticateUser } from "@/actions/authenticate-user";
-import { AuthSchema, authSchema } from "@/types/schemas/auth.schema";
+import { login } from "@/actions/login";
+import { LoginSchema, loginSchema } from "@/types/schemas/auth.schema";
 
 import { Button } from "./Button";
 import { Input } from "./Input";
 
-export const AuthenticationForm = () => {
+export const LoginForm = () => {
   const { push } = useRouter();
 
   const {
@@ -20,29 +20,30 @@ export const AuthenticationForm = () => {
     register,
     setError,
     formState: { errors, isSubmitting },
-  } = useForm<AuthSchema>({
-    resolver: zodResolver(authSchema),
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const authenticate = async (data: AuthSchema) => {
+  const handleLogin = async ({ password, email }: LoginSchema) => {
     try {
-      const { data: authUser, error } = await authenticateUser(data);
+      const { data: user, error } = await login({
+        password,
+        email,
+      });
 
-      if (!!error) {
-        throw new Error(error);
-      } else if (!authUser || !authUser.token) {
-        return;
-      }
+      if (error) throw new Error(error.message);
+      if (!user || !user.token) return;
 
       push("/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         setError("email", { message: error.message }, { shouldFocus: true });
         setError("password", { message: error.message });
+
         toast.error(error.message);
       }
     }
@@ -50,7 +51,7 @@ export const AuthenticationForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(authenticate)}
+      onSubmit={handleSubmit(handleLogin)}
       className="flex w-full flex-col gap-3"
     >
       <Input.Root>
