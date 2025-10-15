@@ -13,3 +13,7 @@
 body {
   @apply bg-brand-dark-700;
 }
+
+button {
+  @apply cursor-pointer;
+}
