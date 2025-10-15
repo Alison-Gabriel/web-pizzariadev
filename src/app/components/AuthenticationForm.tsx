@@ -60,7 +60,7 @@ export const AuthenticationForm = () => {
           {...register("email")}
         />
         {errors.email?.message && (
-          <Input.Error message={errors.email.message} />
+          <Input.Error>{errors.email.message}</Input.Error>
         )}
       </Input.Root>
 
@@ -73,7 +73,7 @@ export const AuthenticationForm = () => {
           {...register("password")}
         />
         {errors.password?.message && (
-          <Input.Error message={errors.password.message} />
+          <Input.Error>{errors.password.message}</Input.Error>
         )}
       </Input.Root>
 
