@@ -8,10 +8,17 @@ import { toast } from "sonner";
 import { authenticateUser } from "@/actions/authenticate-user";
 import { AuthSchema, authSchema } from "@/types/schemas/auth.schema";
 
+import { Input } from "./Input";
+
 export const AuthenticationForm = () => {
   const { push } = useRouter();
 
-  const { handleSubmit, register, setError } = useForm<AuthSchema>({
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors },
+  } = useForm<AuthSchema>({
     resolver: zodResolver(authSchema),
     defaultValues: {
       email: "",
@@ -42,18 +49,34 @@ export const AuthenticationForm = () => {
   return (
     <form
       onSubmit={handleSubmit(authenticate)}
-      className="flex w-full flex-col gap-3 text-lg"
+      className="flex w-full flex-col gap-3"
     >
-      <input
-        type="email"
-        placeholder="Digite seu e-mail"
-        {...register("email")}
-      />
-      <input
-        type="password"
-        placeholder="Digite sua senha"
-        {...register("password")}
-      />
+      <Input.Root>
+        <Input.Label inputId="email">E-mail</Input.Label>
+        <Input.Field
+          id="email"
+          type="email"
+          placeholder="Digite seu e-mail"
+          {...register("email")}
+        />
+        {errors.email?.message && (
+          <Input.Error message={errors.email.message} />
+        )}
+      </Input.Root>
+
+      <Input.Root>
+        <Input.Label inputId="password">Senha</Input.Label>
+        <Input.Field
+          id="password"
+          type="password"
+          placeholder="Digite sua senha"
+          {...register("password")}
+        />
+        {errors.password?.message && (
+          <Input.Error message={errors.password.message} />
+        )}
+      </Input.Root>
+
       <button type="submit">Acessar</button>
     </form>
   );
