@@ -9,8 +9,8 @@ import { toast } from "sonner";
 import { login } from "@/actions/login";
 import { LoginSchema, loginSchema } from "@/types/schemas/auth.schema";
 
-import { Button } from "./Button";
-import { Input } from "./Input";
+import { Button } from "./common/Button";
+import { Input } from "./common/Input";
 
 export const LoginForm = () => {
   const { push } = useRouter();
