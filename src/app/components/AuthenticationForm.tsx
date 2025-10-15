@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 import { authenticateUser } from "@/actions/authenticate-user";
 import { AuthSchema, authSchema } from "@/types/schemas/auth.schema";
 
+import { Button } from "./Button";
 import { Input } from "./Input";
 
 export const AuthenticationForm = () => {
@@ -17,7 +19,7 @@ export const AuthenticationForm = () => {
     handleSubmit,
     register,
     setError,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<AuthSchema>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -77,7 +79,12 @@ export const AuthenticationForm = () => {
         )}
       </Input.Root>
 
-      <button type="submit">Acessar</button>
+      <Button.Root>
+        {isSubmitting && (
+          <Button.Icon className="size-4 animate-spin" icon={Loader2} />
+        )}
+        <Button.Content>Acessar</Button.Content>
+      </Button.Root>
     </form>
   );
 };
