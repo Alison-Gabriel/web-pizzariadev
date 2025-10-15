@@ -22,9 +22,12 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.5",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
     "git-commit-msg-linter": "^5.0.8",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.4",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
