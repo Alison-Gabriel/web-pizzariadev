@@ -2,27 +2,34 @@ import { ComponentProps, ReactNode } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
 const buttonRoot = tv({
-  base: "flex items-center justify-center gap-1 rounded-lg  text-sm font-semibold shadow-lg transition-all hover:opacity-85",
+  base: "flex items-center justify-center gap-1 text-sm transition-all",
   variants: {
-    variant: {
-      primary: "px-2.5 py-1.5 bg-brand-red-900 text-brand-white",
-      icon: "p-1.5 rounded-md shadow-none bg-transparent text-brand-white shadow-0 hover:bg-brand-gray-100/10",
+    color: {
+      ghost: "bg-transparent text-brand-white hover:bg-brand-gray-100/10",
+      link: "bg-transparent text-brand-white",
+      primary:
+        "shadow-lg bg-brand-red-900 hover:opacity-50 text-brand-white  font-semibold",
+    },
+    size: {
+      default: "px-2.5 py-1.5 rounded-lg",
+      icon: "p-1.5 rounded-md",
     },
   },
   defaultVariants: {
-    variant: "primary",
+    color: "primary",
+    size: "default",
   },
 });
 
 interface ButtonRootProps
-  extends ComponentProps<"button">,
+  extends Omit<ComponentProps<"button">, "color">,
     VariantProps<typeof buttonRoot> {
   children: ReactNode;
 }
 
-const ButtonRoot = ({ children, variant, ...props }: ButtonRootProps) => {
+const ButtonRoot = ({ children, color, size, ...props }: ButtonRootProps) => {
   return (
-    <button {...props} className={buttonRoot({ variant })}>
+    <button {...props} className={buttonRoot({ color, size })}>
       {children}
     </button>
   );
