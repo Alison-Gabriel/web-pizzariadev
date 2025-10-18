@@ -2,6 +2,7 @@ import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { logout } from "@/actions/logout";
 import { Button } from "@/components/common/Button";
 
 export const Header = () => {
@@ -34,8 +35,8 @@ export const Header = () => {
             Produtos
           </Link>
 
-          <form>
-            <Button.Root variant="icon">
+          <form action={logout}>
+            <Button.Root type="submit" variant="icon">
               <Button.Icon icon={LogOut} />
             </Button.Root>
           </form>
