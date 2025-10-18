@@ -1,7 +1,7 @@
 import { getCookie } from "cookies-next";
 
 const getCookieClient = () => {
-  const token = getCookie("user-session");
+  const token = getCookie("session");
   return token;
 };
 

@@ -24,10 +24,10 @@ export const login = async (data: LoginSchema) => {
     const expressTime = 60 * 60 * 24 * 30;
     const cookieStore = await cookies();
 
-    cookieStore.set("user-session", authUser.token, {
+    cookieStore.set("session", authUser.token, {
       maxAge: expressTime,
       path: "/",
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
     });
 
