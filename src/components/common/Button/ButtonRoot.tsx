@@ -6,7 +6,7 @@ const buttonRoot = tv({
   variants: {
     variant: {
       primary: "px-2.5 py-1.5 bg-brand-red-900 text-brand-white",
-      icon: "p-1.5 shadow-none bg-transparent text-brand-white shadow-0 hover:bg-brand-gray-100/10",
+      icon: "p-1.5 rounded-md shadow-none bg-transparent text-brand-white shadow-0 hover:bg-brand-gray-100/10",
     },
   },
   defaultVariants: {
