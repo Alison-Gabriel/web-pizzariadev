@@ -8,7 +8,7 @@ const buttonRoot = tv({
       ghost: "bg-transparent text-brand-white hover:bg-brand-gray-100/10",
       link: "bg-transparent text-brand-white",
       primary:
-        "shadow-lg bg-brand-red-900 hover:opacity-50 text-brand-white  font-semibold",
+        "shadow-md bg-brand-red-900 hover:opacity-90 text-brand-white  font-semibold",
     },
     size: {
       default: "px-2.5 py-1.5 rounded-lg",
