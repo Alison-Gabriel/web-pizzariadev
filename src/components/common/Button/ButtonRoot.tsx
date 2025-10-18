@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { tv, VariantProps } from "tailwind-variants";
 
 const buttonRoot = tv({
@@ -14,12 +14,18 @@ const buttonRoot = tv({
   },
 });
 
-interface ButtonRootProps extends VariantProps<typeof buttonRoot> {
+interface ButtonRootProps
+  extends ComponentProps<"button">,
+    VariantProps<typeof buttonRoot> {
   children: ReactNode;
 }
 
-const ButtonRoot = ({ children, variant }: ButtonRootProps) => {
-  return <button className={buttonRoot({ variant })}>{children}</button>;
+const ButtonRoot = ({ children, variant, ...props }: ButtonRootProps) => {
+  return (
+    <button {...props} className={buttonRoot({ variant })}>
+      {children}
+    </button>
+  );
 };
 
 export { ButtonRoot };
