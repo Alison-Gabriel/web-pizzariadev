@@ -6,7 +6,7 @@ const buttonRoot = tv({
   variants: {
     color: {
       ghost: "bg-transparent text-brand-white hover:bg-brand-gray-100/10",
-      link: "bg-transparent text-brand-white",
+      link: "bg-transparent text-brand-white hover:brightness-70",
       primary:
         "shadow-md bg-brand-red-900 hover:opacity-90 text-brand-white  font-semibold",
     },
