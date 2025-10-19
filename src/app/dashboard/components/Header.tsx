@@ -36,7 +36,7 @@ export const Header = () => {
           </Link>
 
           <form action={logout}>
-            <Button.Root type="submit" variant="icon">
+            <Button.Root color="ghost" size="icon">
               <Button.Icon icon={LogOut} />
             </Button.Root>
           </form>
