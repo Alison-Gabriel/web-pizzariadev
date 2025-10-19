@@ -9,6 +9,8 @@ const buttonRoot = tv({
       link: "bg-transparent text-brand-white hover:brightness-70",
       primary:
         "shadow-md bg-brand-red-900 hover:opacity-90 text-brand-white  font-semibold",
+      secondary:
+        "shadow-md bg-brand-green-900 hover:opacity-90 text-brand-dark-900  font-semibold",
     },
     size: {
       default: "px-2.5 py-1.5 rounded-lg",
