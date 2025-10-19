@@ -23,14 +23,14 @@ export const Header = () => {
         <nav className="flex items-center gap-3.5">
           <Link
             className="text-brand-white hover:text-brand-red-900 transition-all"
-            href="/dashboard/categories"
+            href="/dashboard/new-category"
           >
             Categorias
           </Link>
 
           <Link
             className="text-brand-white hover:text-brand-red-900 transition-all"
-            href="/dashboard/products"
+            href="/dashboard/new-product"
           >
             Produtos
           </Link>
