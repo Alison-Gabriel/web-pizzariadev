@@ -5,10 +5,10 @@ import axios from "axios";
 import { api } from "@/lib/axios";
 import { getCookieServer } from "@/lib/cookie-server";
 import { ErrorResponse } from "@/types/api";
-import { CategoryProps } from "@/types/schemas/category";
+import { CategoryResponse } from "@/types/api";
 
 interface GetCategoriesResponse {
-  data?: CategoryProps[];
+  data?: CategoryResponse[];
   error?: ErrorResponse;
 }
 
@@ -16,10 +16,13 @@ export const getCategories = async (): Promise<GetCategoriesResponse> => {
   const token = await getCookieServer();
 
   try {
-    const { data: categories } = await api.get<CategoryProps[]>("/categories", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return { data: categories as CategoryProps[] };
+    const { data: categories } = await api.get<CategoryResponse[]>(
+      "/categories",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+    return { data: categories as CategoryResponse[] };
   } catch (error) {
     if (axios.isAxiosError<ErrorResponse>(error)) {
       return {

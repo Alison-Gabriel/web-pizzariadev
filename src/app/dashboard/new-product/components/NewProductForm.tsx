@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
-import { CategoryProps } from "@/types/schemas/category";
+import { CategoryResponse } from "@/types/api";
 import {
   imageAllowedTypes,
   NewProductSchema,
@@ -19,7 +19,7 @@ import { ImageUploader } from "./ImageUploader";
 import { Textarea } from "./Textarea";
 
 interface NewProductFormProps {
-  categories: CategoryProps[] | undefined;
+  categories?: CategoryResponse[];
 }
 
 export const NewProductForm = ({ categories }: NewProductFormProps) => {

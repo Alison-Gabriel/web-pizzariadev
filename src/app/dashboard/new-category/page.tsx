@@ -1,5 +1,6 @@
 import { NewCategoryForm } from "./components/NewCategoryForm";
 
+// TODO: Implementar sistema onde caso o usuario tente cadastrar uma nova categoria com nome ja existente, o backend devolve uma mensagem de erro informando que a categoria ja existe.
 const NewCategory = () => {
   return (
     <main className="mx-auto my-5 flex max-w-3xl flex-col justify-center gap-3 px-4">

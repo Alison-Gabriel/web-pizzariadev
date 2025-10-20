@@ -15,3 +15,8 @@ export interface ErrorResponse {
   status?: string;
   message: string;
 }
+
+export type CategoryResponse = {
+  id: string;
+  name: string;
+};
