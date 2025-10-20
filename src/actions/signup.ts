@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { api } from "@/lib/axios";
 import { ErrorResponse, SignUpResponse } from "@/types/api";
-import { SignUpSchema, signUpSchema } from "@/types/schemas/auth.schema";
+import { SignUpSchema, signUpSchema } from "@/types/schemas/authentication";
 
 export const signUp = async (data: SignUpSchema) => {
   const result = signUpSchema.safeParse(data);

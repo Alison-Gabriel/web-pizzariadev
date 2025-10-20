@@ -5,10 +5,7 @@ import axios from "axios";
 import { api } from "@/lib/axios";
 import { getCookieServer } from "@/lib/cookie-server";
 import { ErrorResponse } from "@/types/api";
-import {
-  NewCategorySchema,
-  newCategorySchema,
-} from "@/types/schemas/category.schema";
+import { NewCategorySchema, newCategorySchema } from "@/types/schemas/category";
 
 export const createCategory = async (data: NewCategorySchema) => {
   const result = newCategorySchema.safeParse(data);

@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { api } from "@/lib/axios";
 import { LoginResponse } from "@/types/api";
 import { ErrorResponse } from "@/types/api";
-import { LoginSchema, loginSchema } from "@/types/schemas/auth.schema";
+import { LoginSchema, loginSchema } from "@/types/schemas/authentication";
 
 export const login = async (data: LoginSchema) => {
   const result = loginSchema.safeParse(data);
