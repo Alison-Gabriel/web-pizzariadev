@@ -9,10 +9,7 @@ import { toast } from "sonner";
 import { createCategory } from "@/actions/create-category";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
-import {
-  NewCategorySchema,
-  newCategorySchema,
-} from "@/types/schemas/category.schema";
+import { NewCategorySchema, newCategorySchema } from "@/types/schemas/category";
 
 export const NewCategoryForm = () => {
   const { push } = useRouter();

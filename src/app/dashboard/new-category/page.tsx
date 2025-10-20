@@ -1,4 +1,4 @@
-import { NewCategoryForm } from "../components/NewCategoryForm";
+import { NewCategoryForm } from "./components/NewCategoryForm";
 
 const NewCategory = () => {
   return (

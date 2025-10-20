@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { signUp } from "@/actions/signup";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
-import { SignUpSchema, signUpSchema } from "@/types/schemas/auth.schema";
+import { SignUpSchema, signUpSchema } from "@/types/schemas/authentication";
 
 export const SignUpForm = () => {
   const { push } = useRouter();
