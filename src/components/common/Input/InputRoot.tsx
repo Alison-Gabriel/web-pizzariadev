@@ -1,11 +1,19 @@
-import { ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
-interface InputRootProps {
+interface InputRootProps extends ComponentProps<"div"> {
   children: ReactNode;
 }
 
-const InputRoot = ({ children }: InputRootProps) => {
-  return <div className="flex w-full flex-col">{children}</div>;
+const InputRoot = ({ children, ...props }: InputRootProps) => {
+  return (
+    <div
+      {...props}
+      className={twMerge("flex w-full flex-col", props.className)}
+    >
+      {children}
+    </div>
+  );
 };
 
 export { InputRoot };

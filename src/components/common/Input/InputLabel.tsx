@@ -1,15 +1,19 @@
 import { ComponentProps, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
-interface InputLabelProps {
-  htmlFor: ComponentProps<"label">["htmlFor"];
+interface InputLabelProps extends ComponentProps<"label"> {
   children: ReactNode;
 }
 
-const InputLabel = ({ htmlFor, children }: InputLabelProps) => {
+const InputLabel = ({ htmlFor, children, ...props }: InputLabelProps) => {
   return (
     <label
+      {...props}
       htmlFor={htmlFor}
-      className="text-brand-white mb-1 text-sm font-semibold"
+      className={twMerge(
+        "text-brand-white mb-1 text-sm font-semibold",
+        props.className,
+      )}
     >
       {children}
     </label>
