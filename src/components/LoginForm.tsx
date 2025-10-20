@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { login } from "@/actions/login";
-import { LoginSchema, loginSchema } from "@/types/schemas/auth.schema";
+import { LoginSchema, loginSchema } from "@/types/schemas/authentication";
 
 import { Button } from "./common/Button";
 import { Input } from "./common/Input";
