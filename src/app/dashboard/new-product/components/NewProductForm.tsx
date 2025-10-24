@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, UploadCloud } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,13 +29,13 @@ interface NewProductFormProps {
 
 export const NewProductForm = ({ categories }: NewProductFormProps) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const router = useRouter();
 
   const {
     handleSubmit,
     register,
     setError,
     control,
-    reset: resetFormFields,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(productSchema),
@@ -54,9 +55,8 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
         throw new Error(error.message);
       }
 
-      resetFormFields();
-      setImagePreview(null);
       toast.success("Produto criado com sucesso!");
+      router.push("/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
