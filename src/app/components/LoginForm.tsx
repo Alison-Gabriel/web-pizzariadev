@@ -9,11 +9,11 @@ import { toast } from "sonner";
 import { login } from "@/actions/login";
 import { LoginSchema, loginSchema } from "@/types/schemas/authentication";
 
-import { Button } from "./common/Button";
-import { Input } from "./common/Input";
+import { Button } from "../../components/common/Button";
+import { Input } from "../../components/common/Input";
 
 export const LoginForm = () => {
-  const { push } = useRouter();
+  const router = useRouter();
 
   const {
     handleSubmit,
@@ -28,22 +28,18 @@ export const LoginForm = () => {
     },
   });
 
-  const handleLogin = async ({ password, email }: LoginSchema) => {
+  const handleLogin = async (data: LoginSchema) => {
     try {
-      const { data: user, error } = await login({
-        password,
-        email,
-      });
+      const { data: user, error } = await login(data);
 
       if (error) throw new Error(error.message);
       if (!user || !user.token) return;
 
-      push("/dashboard");
+      router.push("/dashboard");
     } catch (error) {
       if (error instanceof Error) {
         setError("email", { message: error.message }, { shouldFocus: true });
         setError("password", { message: error.message });
-
         toast.error(error.message);
       }
     }
@@ -60,6 +56,7 @@ export const LoginForm = () => {
           placeholder="Digite seu e-mail"
           {...register("email")}
         />
+
         {errors.email?.message && (
           <Input.Error>{errors.email.message}</Input.Error>
         )}
@@ -71,6 +68,7 @@ export const LoginForm = () => {
           placeholder="Digite sua senha"
           {...register("password")}
         />
+
         {errors.password?.message && (
           <Input.Error>{errors.password.message}</Input.Error>
         )}
@@ -80,6 +78,7 @@ export const LoginForm = () => {
         {isSubmitting && (
           <Button.Icon className="size-4 animate-spin" icon={Loader2} />
         )}
+
         <Button.Content>Acessar</Button.Content>
       </Button.Root>
     </form>
