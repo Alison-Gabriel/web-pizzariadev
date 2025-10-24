@@ -9,7 +9,7 @@ import { NewCategorySchema, newCategorySchema } from "@/types/schemas/category";
 
 interface CreateCategoryResponse {
   data?: CategoryResponse;
-  error?: ErrorResponse;
+  error?: Omit<ErrorResponse, "status">;
 }
 
 export const createCategory = async (
@@ -18,34 +18,34 @@ export const createCategory = async (
   const token = await getCookieServer();
   if (!token) {
     return {
-      error: { message: "Usuario nao autenticado." } as ErrorResponse,
+      error: { message: "Usuario nao autenticado." },
     };
   }
 
-  const result = newCategorySchema.safeParse(data);
-  if (!result.success) {
+  const { success } = newCategorySchema.safeParse(data);
+  if (!success) {
     return {
-      error: { message: "Nome da categoria inválido" } as ErrorResponse,
+      error: { message: "Os dados fornecidos nao atendem ao esperado." },
     };
   }
 
   try {
-    const { data: newlyCreatedCategory } = await api.post<CategoryResponse>(
+    const { data: category } = await api.post<CategoryResponse>(
       "/category",
       data,
       { headers: { Authorization: `Bearer ${token}` } },
     );
-    return { data: newlyCreatedCategory };
+    return { data: category };
   } catch (error) {
-    if (axios.isAxiosError<ErrorResponse>(error)) {
+    if (axios.isAxiosError<ErrorResponse>(error) && error.response?.data) {
       return {
-        error: { message: error.response?.data.message } as ErrorResponse,
+        error: { message: error.response.data.message },
       };
     }
     return {
       error: {
         message: "Um erro inesperado aconteceu, tente novamente ",
-      } as ErrorResponse,
+      },
     };
   }
 };
