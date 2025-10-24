@@ -4,10 +4,17 @@ import axios from "axios";
 
 import { api } from "@/lib/axios";
 import { getCookieServer } from "@/lib/cookie-server";
-import { ErrorResponse } from "@/types/api";
+import { CategoryResponse, ErrorResponse } from "@/types/api";
 import { NewCategorySchema, newCategorySchema } from "@/types/schemas/category";
 
-export const createCategory = async (data: NewCategorySchema) => {
+interface CreateCategoryResponse {
+  data?: CategoryResponse;
+  error?: ErrorResponse;
+}
+
+export const createCategory = async (
+  data: NewCategorySchema,
+): Promise<CreateCategoryResponse> => {
   const result = newCategorySchema.safeParse(data);
   if (!result.success) {
     return {
@@ -15,13 +22,15 @@ export const createCategory = async (data: NewCategorySchema) => {
     };
   }
 
-  try {
-    const token = await getCookieServer();
+  const token = await getCookieServer();
 
-    const { data: createdCategory } = await api.post("/category", data, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return { data: createdCategory };
+  try {
+    const { data: newlyCreatedCategory } = await api.post<CategoryResponse>(
+      "/category",
+      data,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    return { data: newlyCreatedCategory };
   } catch (error) {
     if (axios.isAxiosError<ErrorResponse>(error)) {
       return {
