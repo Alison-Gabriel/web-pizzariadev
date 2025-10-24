@@ -3,46 +3,49 @@
 import axios from "axios";
 import { cookies } from "next/headers";
 
+import { COOKIE_EXPIRATION_TIME } from "@/constants/cookie";
 import { api } from "@/lib/axios";
 import { LoginResponse } from "@/types/api";
 import { ErrorResponse } from "@/types/api";
 import { LoginSchema, loginSchema } from "@/types/schemas/authentication";
 
-export const login = async (data: LoginSchema) => {
-  const result = loginSchema.safeParse(data);
+interface LoginResponseData {
+  data?: LoginResponse;
+  error?: ErrorResponse;
+}
 
-  if (!result.success) {
-    return { error: { message: "E-mail ou senha inválidos" } as ErrorResponse };
+export const login = async (data: LoginSchema): Promise<LoginResponseData> => {
+  const { success } = loginSchema.safeParse(data);
+  if (!success) {
+    return {
+      error: {
+        message: "Os dados fornecidos nao atendem ao esperado.",
+      },
+    };
   }
 
   try {
-    const { data: authUser } = await api.post<LoginResponse>("/auth", {
-      email: result.data.email,
-      password: result.data.password,
-    });
+    const { data: user } = await api.post<LoginResponse>("/auth", data);
 
-    const expressTime = 60 * 60 * 24 * 30;
     const cookieStore = await cookies();
-
-    cookieStore.set("session", authUser.token, {
-      maxAge: expressTime,
+    cookieStore.set("session", user.token, {
+      maxAge: COOKIE_EXPIRATION_TIME,
       path: "/",
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
 
-    return { data: authUser };
+    return { data: user };
   } catch (error) {
-    if (axios.isAxiosError<ErrorResponse>(error)) {
+    if (axios.isAxiosError<ErrorResponse>(error) && error.response?.data) {
       return {
-        error: { message: error.response?.data.message } as ErrorResponse,
+        error: { message: error.response.data.message },
       };
     }
-
     return {
       error: {
-        message: "Um erro inesperado aconteceu, tente novamente.",
-      } as ErrorResponse,
+        message: "Erro inesperado ao fazer login.",
+      },
     };
   }
 };
