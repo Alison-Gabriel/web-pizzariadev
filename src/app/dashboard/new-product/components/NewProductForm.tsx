@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { createProduct } from "@/actions/create-product";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
-import { MAX_IMAGES_SIZE_IN_BYTES } from "@/constants/max-images-size";
+import { MAX_IMAGE_SIZE_IN_BYTES } from "@/constants/product";
 import { CategoryResponse } from "@/types/api";
 import {
   imageAllowedTypes,
@@ -82,7 +82,7 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
 
                   if (!image) return field.onChange(null);
 
-                  if (image.size > MAX_IMAGES_SIZE_IN_BYTES) {
+                  if (image.size > MAX_IMAGE_SIZE_IN_BYTES) {
                     toast.error("A imagem nao pode pesar mais que 1MB.");
                     return setError("image", {
                       message: "Selecione uma imagem de ate 1MB.",
