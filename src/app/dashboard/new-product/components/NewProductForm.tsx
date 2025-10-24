@@ -27,7 +27,7 @@ interface NewProductFormProps {
 }
 
 export const NewProductForm = ({ categories }: NewProductFormProps) => {
-  const [imagePreview, setImagePreview] = useState("");
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const {
     handleSubmit,
@@ -55,6 +55,7 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
       }
 
       resetFormFields();
+      setImagePreview(null);
       toast.success("Produto criado com sucesso!");
     } catch (error) {
       if (error instanceof Error) {
