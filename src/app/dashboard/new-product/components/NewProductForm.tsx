@@ -1,20 +1,24 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UploadCloud } from "lucide-react";
-import { ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Loader2, UploadCloud } from "lucide-react";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import { createProduct } from "@/actions/create-product";
 import { Button } from "@/components/common/Button";
 import { Input } from "@/components/common/Input";
+import { MAX_IMAGES_SIZE_IN_BYTES } from "@/constants/max-images-size";
 import { CategoryResponse } from "@/types/api";
 import {
   imageAllowedTypes,
-  NewProductSchema,
-  newProductSchema,
+  ProductSchema,
+  productSchema,
 } from "@/types/schemas/product";
 
-import { CategoriesSelector } from "./CategoriesSelect";
+import { CategoriesSelector } from "./CategoriesSelector";
+import { CategoryOption } from "./CategoryOption";
 import { ImageUploader } from "./ImageUploader";
 import { Textarea } from "./Textarea";
 
@@ -23,75 +27,95 @@ interface NewProductFormProps {
 }
 
 export const NewProductForm = ({ categories }: NewProductFormProps) => {
-  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    setError,
+    control,
+    reset: resetFormFields,
+    formState: { errors, isSubmitting },
   } = useForm({
-    resolver: zodResolver(newProductSchema),
+    resolver: zodResolver(productSchema),
+    mode: "onChange",
     defaultValues: {
       name: "",
-      category: "",
       price: "",
       description: "",
     },
-    mode: "onChange",
   });
 
-  const { onChange: onImageSelect, ...registerImage } = register("image");
+  const handleProductCreate = async (data: ProductSchema) => {
+    try {
+      const { error } = await createProduct(data);
 
-  const handleUploadImage = (e: ChangeEvent<HTMLInputElement>) => {
-    const uploadedImage = e.target.files?.[0];
-    if (uploadedImage && imageAllowedTypes.includes(uploadedImage.type)) {
-      return setImagePreviewUrl(URL.createObjectURL(uploadedImage));
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      resetFormFields();
+      toast.success("Produto criado com sucesso!");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     }
-    setImagePreviewUrl("");
-  };
-
-  const handleCreateProduct = async (data: NewProductSchema) => {
-    // eslint-disable-next-line no-console
-    console.log(data);
   };
 
   return (
     <form
-      onSubmit={handleSubmit(handleCreateProduct)}
+      onSubmit={handleSubmit(handleProductCreate)}
       className="flex flex-col gap-3"
     >
-      <Input.Root>
-        <ImageUploader.Label>
-          <ImageUploader.Icon icon={UploadCloud} className="size-7" />
+      <Controller
+        name="image"
+        control={control}
+        render={({ field, fieldState }) => (
+          <Input.Root>
+            <ImageUploader.Label>
+              <ImageUploader.Icon icon={UploadCloud} className="size-7" />
 
-          <ImageUploader.Field
-            {...registerImage}
-            onChange={(e) => {
-              onImageSelect(e);
-              handleUploadImage(e);
-            }}
-          />
+              <ImageUploader.Field
+                onChange={(e) => {
+                  const image = e.target.files?.[0];
 
-          {!!imagePreviewUrl && <ImageUploader.Preview src={imagePreviewUrl} />}
-        </ImageUploader.Label>
+                  if (!image) return field.onChange(null);
 
-        {!!errors.image?.message && (
-          <Input.Error>{errors.image.message}</Input.Error>
+                  if (image.size > MAX_IMAGES_SIZE_IN_BYTES) {
+                    toast.error("A imagem nao pode pesar mais que 1MB.");
+                    return setError("image", {
+                      message: "Selecione uma imagem de ate 1MB.",
+                    });
+                  }
+
+                  if (!imageAllowedTypes.includes(image.type)) {
+                    toast.error("Envie uma imagem PNG ou JPEG");
+                    return setError("image", {
+                      message: "Selecione uma imagem PNG ou JPEG.",
+                    });
+                  }
+
+                  field.onChange(image);
+                  setImagePreview(URL.createObjectURL(image));
+                }}
+              />
+
+              {imagePreview && <ImageUploader.Preview src={imagePreview} />}
+            </ImageUploader.Label>
+
+            {!!fieldState.error && (
+              <Input.Error>{fieldState.error.message}</Input.Error>
+            )}
+          </Input.Root>
         )}
-      </Input.Root>
+      />
 
       <Input.Root>
-        <CategoriesSelector {...register("category")} name="category">
-          <option value="" disabled>
-            Selecione uma categoria
-          </option>
-
-          {!!categories?.length &&
-            categories.map((category) => (
-              <option key={category.id} id={category.id}>
-                {category.name}
-              </option>
-            ))}
+        <CategoriesSelector {...register("category")}>
+          {categories?.map((category) => (
+            <CategoryOption key={category.id} category={category} />
+          ))}
         </CategoriesSelector>
 
         {errors.category?.message && (
@@ -100,11 +124,7 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
       </Input.Root>
 
       <Input.Root>
-        <Input.Field
-          {...register("name")}
-          name="name"
-          placeholder="Digite o nome do produto"
-        />
+        <Input.Field {...register("name")} placeholder="Nome do produto" />
 
         {errors.name?.message && (
           <Input.Error>{errors.name.message}</Input.Error>
@@ -112,11 +132,7 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
       </Input.Root>
 
       <Input.Root>
-        <Input.Field
-          {...register("price")}
-          name="price"
-          placeholder="Digite o preco do produto"
-        />
+        <Input.Field {...register("price")} placeholder="Preco do produto" />
 
         {errors.price?.message && (
           <Input.Error>{errors.price.message}</Input.Error>
@@ -124,7 +140,10 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
       </Input.Root>
 
       <Input.Root>
-        <Textarea {...register("description")} name="description" />
+        <Textarea
+          {...register("description")}
+          placeholder="Descricao do produto"
+        />
 
         {errors.description?.message && (
           <Input.Error>{errors.description.message}</Input.Error>
@@ -132,6 +151,9 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
       </Input.Root>
 
       <Button.Root color="secondary">
+        {isSubmitting && (
+          <Button.Icon className="size-4 animate-spin" icon={Loader2} />
+        )}
         <Button.Content>Cadastrar</Button.Content>
       </Button.Root>
     </form>
