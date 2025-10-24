@@ -9,30 +9,33 @@ import { CategoryResponse } from "@/types/api";
 
 interface GetCategoriesResponse {
   data?: CategoryResponse[];
-  error?: ErrorResponse;
+  error?: Omit<ErrorResponse, "status">;
 }
 
 export const getCategories = async (): Promise<GetCategoriesResponse> => {
   const token = await getCookieServer();
+  if (!token) {
+    return {
+      error: { message: "Usuario nao autenticado." },
+    };
+  }
 
   try {
     const { data: categories } = await api.get<CategoryResponse[]>(
       "/categories",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      { headers: { Authorization: `Bearer ${token}` } },
     );
     return { data: categories as CategoryResponse[] };
   } catch (error) {
-    if (axios.isAxiosError<ErrorResponse>(error)) {
+    if (axios.isAxiosError<ErrorResponse>(error) && error.response?.data) {
       return {
-        error: { message: error.response?.data.message } as ErrorResponse,
+        error: { message: error.response.data.message },
       };
     }
     return {
       error: {
         message: "Um erro inesperado aconteceu, tente novamente.",
-      } as ErrorResponse,
+      },
     };
   }
 };
