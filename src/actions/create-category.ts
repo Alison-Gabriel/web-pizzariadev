@@ -15,14 +15,19 @@ interface CreateCategoryResponse {
 export const createCategory = async (
   data: NewCategorySchema,
 ): Promise<CreateCategoryResponse> => {
+  const token = await getCookieServer();
+  if (!token) {
+    return {
+      error: { message: "Usuario nao autenticado." } as ErrorResponse,
+    };
+  }
+
   const result = newCategorySchema.safeParse(data);
   if (!result.success) {
     return {
       error: { message: "Nome da categoria inválido" } as ErrorResponse,
     };
   }
-
-  const token = await getCookieServer();
 
   try {
     const { data: newlyCreatedCategory } = await api.post<CategoryResponse>(
