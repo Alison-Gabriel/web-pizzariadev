@@ -84,14 +84,14 @@ export const NewProductForm = ({ categories }: NewProductFormProps) => {
                   if (!image) return field.onChange(null);
 
                   if (image.size > MAX_IMAGE_SIZE_IN_BYTES) {
-                    toast.error("A imagem nao pode pesar mais que 1MB.");
+                    toast.warning("A imagem nao pode pesar mais que 1MB.");
                     return setError("image", {
                       message: "Selecione uma imagem de ate 1MB.",
                     });
                   }
 
                   if (!imageAllowedTypes.includes(image.type)) {
-                    toast.error("Envie uma imagem PNG ou JPEG");
+                    toast.warning("Envie uma imagem PNG ou JPEG");
                     return setError("image", {
                       message: "Selecione uma imagem PNG ou JPEG.",
                     });
