@@ -16,12 +16,12 @@ export interface ErrorResponse {
   message: string;
 }
 
-export type CategoryResponse = {
+export interface CategoryResponse {
   id: string;
   name: string;
-};
+}
 
-export type ProductResponse = {
+export interface ProductResponse {
   name: string;
   price: string;
   description: string;
@@ -30,4 +30,14 @@ export type ProductResponse = {
   id: string;
   created_at: Date | null;
   updated_at: Date | null;
-};
+}
+
+export interface OrderResponse {
+  id: string;
+  name: string;
+  table: number;
+  is_done: boolean;
+  is_draft: boolean;
+  created_at: string;
+  updated_at: string;
+}
