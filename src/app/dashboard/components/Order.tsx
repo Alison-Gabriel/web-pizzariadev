@@ -1,0 +1,27 @@
+import { ExternalLink } from "lucide-react";
+
+import { Button } from "@/components/common/Button";
+import { OrderResponse } from "@/types/api";
+
+interface OrderProps {
+  order: OrderResponse;
+}
+
+export const Order = ({ order }: OrderProps) => {
+  return (
+    <li className="bg-brand-dark-900 text-brand-white flex h-11 items-center rounded-lg pr-2 shadow-md">
+      <div className="bg-brand-green-900 mr-3.5 h-11 w-1 rounded-tl-lg rounded-bl-lg" />
+
+      <div className="flex flex-1 justify-between">
+        <strong className="text-lg">Mesa {order.table}</strong>
+
+        <Button.Root color="ghost" size="icon">
+          <Button.Icon
+            icon={ExternalLink}
+            className="text-brand-gray-100 size-5"
+          />
+        </Button.Root>
+      </div>
+    </li>
+  );
+};
